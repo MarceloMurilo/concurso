@@ -1,0 +1,40 @@
+{
+  "lastUpdated": null,
+  "examDate": null,
+  "daysRemaining": null,
+  "simulations": [],
+  "editalCoverage": {
+    "portugues": {
+      "pct": 0,
+      "done": 0,
+      "total": 0
+    },
+    "informatica": {
+      "pct": 0,
+      "done": 0,
+      "total": 0
+    },
+    "legislacao": {
+      "pct": 0,
+      "done": 0,
+      "total": 0
+    },
+    "especificos": {
+      "pct": 0,
+      "done": 0,
+      "total": 0
+    },
+    "overall": 0
+  },
+  "errorPatterns": [],
+  "insights": [],
+  "recommendations": [],
+  "kpis": {
+    "avgPct": 0,
+    "totalSimulations": 0,
+    "simuladoes": 0,
+    "simuladinhos": 0,
+    "totalQuestions": 0,
+    "trend": "flat"
+  }
+}

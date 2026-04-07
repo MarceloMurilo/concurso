@@ -1,0 +1,6 @@
+node_modules/
+backend/study-progress.sqlite
+backend/inbox/
+backend/.env
+.DS_Store
+Thumbs.db

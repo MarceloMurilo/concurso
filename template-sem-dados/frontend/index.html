@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UFMA — Analista TI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Overlay para fechar sidebar no mobile -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- ═══════════════════════ SIDEBAR ═══════════════════════ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-top-row">
+        <div>
+          <span class="brand-tag">CONCURSO</span>
+          <h1 class="brand-title">UFMA</h1>
+          <p class="brand-sub">Analista de TI</p>
+        </div>
+        <button class="theme-toggle" id="themeToggleSidebar" title="Alternar tema" aria-label="Alternar tema claro/escuro">
+          <span class="theme-icon">◑</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="countdown-block">
+      <div class="countdown-label">DIAS PARA A PROVA</div>
+      <div class="countdown-number" id="daysRemaining">—</div>
+      <div class="countdown-date">26 / ABR / 2026</div>
+      <div class="countdown-bar-wrap">
+        <div class="countdown-bar" id="countdownBar"></div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <button class="nav-btn active" data-tab="edital">
+        <span class="nav-icon">ED</span> Edital
+      </button>
+      <button class="nav-btn" data-tab="desempenho">
+        <span class="nav-icon">DP</span> Desempenho
+      </button>
+      <button class="nav-btn" data-tab="checklist">
+        <span class="nav-icon">CL</span> Checklist
+      </button>
+      <button class="nav-btn" data-tab="erros">
+        <span class="nav-icon">ER</span> Erros
+      </button>
+      <!-- Config/Chat IA desativados no template sem IA -->
+    </nav>
+
+    <button class="btn-novo" id="btnNovo">
+      <span>+</span> Novo Simulado
+    </button>
+
+    <div class="sidebar-status" id="backendStatus">
+      <span class="status-dot"></span>
+      <span class="status-label">conectando...</span>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════ MAIN ═══════════════════════ -->
+  <main class="main">
+
+    <!-- Header mobile (oculto no desktop) -->
+    <header class="mobile-header">
+      <button class="hamburger" id="hamburgerBtn" aria-label="Abrir menu">
+        <span></span><span></span><span></span>
+      </button>
+      <span class="mobile-title">UFMA · TI</span>
+      <div class="mobile-header-right">
+        <button class="btn-novo-mobile" id="btnNovoMobile" aria-label="Novo simulado">+</button>
+        <button class="theme-toggle" id="themeToggleMobile" aria-label="Alternar tema">
+          <span class="theme-icon">◑</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- KPI strip -->
+    <div class="kpi-strip" id="kpiStrip">
+      <div class="kpi-card" id="kpiMedia">
+        <div class="kpi-val">—</div>
+        <div class="kpi-label">Média geral</div>
+      </div>
+      <div class="kpi-card" id="kpiEdital">
+        <div class="kpi-val">—</div>
+        <div class="kpi-label">Edital</div>
+      </div>
+      <div class="kpi-card" id="kpiTotal">
+        <div class="kpi-val">—</div>
+        <div class="kpi-label">Questões</div>
+      </div>
+      <div class="kpi-card" id="kpiSims">
+        <div class="kpi-val">—</div>
+        <div class="kpi-label">Simulados</div>
+      </div>
+      <div class="kpi-card" id="kpiTrend">
+        <div class="kpi-val kpi-trend-icon">—</div>
+        <div class="kpi-label">Tendência</div>
+      </div>
+    </div>
+
+    <!-- ── TAB: EDITAL ── -->
+    <section class="tab-content active" id="tab-edital">
+      <div class="table-card onboarding-card">
+        <div class="table-title">Onboarding Rápido</div>
+        <div class="onboarding-content">
+          <p><strong>Comece sempre pelo edital.</strong> O sistema depende disso para montar checklist e foco correto.</p>
+          <ol>
+            <li>Defina o edital-alvo e ajuste o checklist inicial por disciplina.</li>
+            <li>Envie o primeiro simulado com: <strong>prova bruta</strong>, <strong>gabarito oficial</strong> e <strong>suas respostas</strong>.</li>
+            <li>Atualize o histórico e revise os padrões de erro após cada correção.</li>
+            <li>Repita o ciclo semanalmente: quanto mais simulados, melhor a detecção de vícios e foco de estudo.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="section-header">
+        <h2>Cobertura do Edital</h2>
+        <p>Meta: <strong>100%</strong> — cada tópico visto ao menos uma vez antes da prova</p>
+      </div>
+      <div class="overall-coverage" id="overallCoverage">
+        <div class="oc-label">COBERTURA GERAL</div>
+        <div class="oc-bar-wrap">
+          <div class="oc-bar" id="overallBar"></div>
+        </div>
+        <div class="oc-pct" id="overallPct">0%</div>
+      </div>
+      <div class="disciplines-grid" id="disciplinesGrid"></div>
+    </section>
+
+    <!-- ── TAB: DESEMPENHO ── -->
+    <section class="tab-content" id="tab-desempenho">
+      <div class="section-header">
+        <h2>Desempenho</h2>
+        <div class="filter-row">
+          <button class="filter-btn active" data-filter="todos">Todos</button>
+          <button class="filter-btn" data-filter="simuladao">Simuladões (55q)</button>
+        </div>
+      </div>
+      <div class="kurtosis-panel" id="kurtosisPanel">
+        <div class="kurtosis-item">
+          <span class="k-label">Curtose <span class="k-help" data-tip="Curtose (excesso) mede picos/extremos na distribuicao das notas. Valor alto indica mais resultados extremos; valor baixo/negativo indica notas mais uniformes.">?</span></span>
+          <strong id="kurtosisValue">--</strong>
+          <small class="k-ref" id="kurtosisRef">Ref: -1 a +1 (faixa estavel)</small>
+        </div>
+        <div class="kurtosis-item">
+          <span class="k-label">Desvio padrao <span class="k-help" data-tip="Desvio padrao mede o quanto suas notas se afastam da media. Valor baixo indica desempenho mais estavel; valor alto indica maior oscilacao entre provas.">?</span></span>
+          <strong id="stdValue">--</strong>
+          <small class="k-ref" id="stdRef">Ref: ate 4 baixo | 4-8 medio | acima de 8 alto</small>
+        </div>
+        <div class="kurtosis-item">
+          <span class="k-label">Consistencia <span class="k-help" data-tip="Consistencia resume sua estabilidade de desempenho. Ela combina variacao (desvio padrao) e formato da distribuicao (curtose): Alta = notas mais estaveis; Baixa = oscilacao maior.">?</span></span>
+          <strong id="consistencyValue">--</strong>
+        </div>
+        <div class="kurtosis-item">
+          <span class="k-label">Atipico recente <span class="k-help" data-tip="Indica se o resultado mais recente ficou muito distante da sua media historica (z-score). Se aparecer Sim, a ultima prova foi fora do padrao normal.">?</span></span>
+          <strong id="outlierValue">--</strong>
+        </div>
+      </div>
+      <div class="charts-row">
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <div class="chart-title">Evolução de acertos</div>
+            <div class="chart-toggle-row" id="evolucaoToggle">
+              <button class="chart-tog active" data-mode="geral">Geral</button>
+              <button class="chart-tog" data-mode="tendencia">Tendência</button>
+              <button class="chart-tog" data-mode="area">Por área</button>
+            </div>
+          </div>
+          <canvas id="chartEvolucao"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <div class="chart-title">Disciplinas por simuladão</div>
+            <div class="chart-toggle-row" id="discToggle">
+              <button class="chart-tog active" data-count="3">Últ. 3</button>
+              <button class="chart-tog" data-count="5">Últ. 5</button>
+              <button class="chart-tog" data-count="0">Todos</button>
+            </div>
+          </div>
+          <canvas id="chartDisciplinas"></canvas>
+        </div>
+      </div>
+      <div class="table-card">
+        <div class="table-title">Histórico completo</div>
+        <div class="table-wrap">
+          <table id="simTable">
+            <thead>
+              <tr>
+                <th>Data</th><th>Nome</th><th>Tipo</th>
+                <th>Acertos</th><th>Total</th><th>%</th>
+                <th>Port.</th><th>Info.</th><th>Legis.</th><th>Espec.</th>
+              </tr>
+            </thead>
+            <tbody id="simTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="table-card">
+        <div class="table-title">Brutos (somente 55q)</div>
+        <div class="insights-block" id="brutos55List"></div>
+      </div>
+    </section>
+
+    <!-- ── TAB: ERROS ── -->
+    
+
+    <!-- Checklist -->
+    <section class="tab-content" id="tab-checklist">
+      <div class="section-header">
+        <h2>Checklist Semanal</h2>
+        <p>Marque o que ja estudou.</p>
+      </div>
+
+      <div class="checklist-top-row">
+        <div class="checklist-summary" id="checklistSummary"></div>
+        <div class="checklist-actions">
+          <button class="btn-submit" id="btnChecklistReload">Recarregar</button>
+        </div>
+      </div>
+
+      <div class="checklist-meta" id="checklistMeta"></div>
+      <div class="checklist-list" id="checklistList"></div>
+    </section>
+
+    <section class="tab-content" id="tab-erros">
+      <div class="section-header">
+        <h2>Padrões de Erro</h2>
+        <p>Tópicos que mais aparecem como erro — ordenados por frequência</p>
+      </div>
+      <div class="insights-block" id="insightsBlock"></div>
+      
+      <div class="checkpoint-card">
+        <div class="checkpoint-head">
+          <h3>Checkpoint completo para outras LLMs</h3>
+          <div class="checkpoint-actions">
+            <button class="btn-submit" id="btnRefreshCheckpoint">Atualizar texto</button>
+            <button class="btn-save" id="btnCopyCheckpoint">Copiar tudo</button>
+          </div>
+        </div>
+        <textarea id="checkpointText" readonly></textarea>
+      </div><div class="errors-grid" id="errorsGrid"></div>
+    </section>
+
+    <!-- ── TAB: CONFIG ── -->
+    <!-- Tab Config IA removida no template sem IA -->
+
+    <!-- ── TAB: CHAT ── -->
+    <!-- Tab Chat IA removida no template sem IA -->
+
+  </main>
+
+  <!-- Bottom nav mobile -->
+  <nav class="mobile-bottom-nav" id="mobileBottomNav">
+    <button class="mob-nav-btn active" data-tab="edital">
+      <span>ED</span><span>Edital</span>
+    </button>
+    <button class="mob-nav-btn" data-tab="desempenho">
+      <span>DP</span><span>Desemp.</span>
+    </button>
+    <button class="mob-nav-btn" data-tab="checklist">
+      <span>CL</span><span>Check.</span>
+    </button>
+    <button class="mob-nav-btn" data-tab="erros">
+      <span>ER</span><span>Erros</span>
+    </button>
+    <!-- Config/Chat IA desativados no template sem IA -->
+  </nav>
+
+  <!-- ═══════════════════════ MODAL ═══════════════════════ -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <button class="modal-close" id="modalClose">✕</button>
+      <h3 class="modal-title">Novo Simulado</h3>
+      <div class="modal-type-row">
+        <label class="type-opt">
+          <input type="radio" name="simType" value="simuladao" checked>
+          <span>Simuladão <em>55q</em></span>
+        </label>
+      </div>
+      <div class="modal-name-row">
+        <input type="text" id="simName" placeholder="Nome do simulado (opcional)">
+      </div>
+      <div class="modal-fields">
+        <div class="modal-field">
+          <label>Texto do simulado (questões)</label>
+          <textarea id="simText" placeholder="Cole aqui o texto completo do simulado..."></textarea>
+        </div>
+        <div class="modal-field">
+          <label>Suas respostas</label>
+          <textarea id="simRespostas" placeholder="Cole aqui suas respostas ou gabarito..."></textarea>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <div class="modal-status" id="modalStatus"></div>
+        <button class="btn-submit" id="btnSubmitSim">Enviar para análise</button>
+        <!-- Botao de analise IA removido -->
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
+
+
